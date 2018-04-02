@@ -1,0 +1,74 @@
+User viewing menu
+
+> Item Viewing Menu
+
+# | Item Name      | Location      | Availability     | Description
+================================================================================
+1 | Arduino        | Green Cabinet | 3 Available      | Standard Arduino Uno.
+2 | Raspberry Pi   | Green Cabinet | 2 Available      | Standard Raspberry Pi.
+================================================================================
+Select Item: 1
+
+
+> Specific Item Menu
+
+Arduino: Standard Arduino Uno
+========
+Location: Green Cabinet
+3 of 5 Available
+Do you want to (l)oan or (r)eturn this item, or go (b)ack?
+
+> If user selects 'l':
+
+How many "Arduino Uno"s do you need: 1
+What is your wentworth email: example123@wit.edu
+example123@wit.edu is going to loan out 1 arduino. Is this correct? (y/n) y
+You have succesfully loaned out 1 Arduino. Thanks!
+
+> If user selects 'r':
+
+You are going to return an Arduino Uno. How many are you returning? 1
+What is your Wentworth email: example123@wit.edu
+You have successfully returned 1 Arduino Uno. Thanks!
+
+Executive viewing menu
+> Item Viewing Menu
+# | Item Name       | Location      | # In | # Out | # Total | Description
+======================================================================================
+1 | Arduino         | Green Cabinet | 3    | 4     | 7       | Standard Arduino Uno.
+2 | Raspberry Pi    | Green Cabinet | 2    | 2     | 4       | Standard Raspberry Pi.
+======================================================================================
+Select an item to view/modify, or enter '+' to add an additional entry:
+
+> View/modify menu:
+Item Name      | Raspberry Pi
+Location       | Green Cabinet
+Total Quantity | 4
+Description    | Standard Raspberry Pi.
+
+# | Loaned? | Email of Loaner    | Date of Loan
+===================================================
+1 | Yes     | example123@wit.edu | March 12, 2018
+2 | Yes     | newperson@wit.edu  | March 3, 2018
+3 | No      | --                 | --
+4 | No      | --                 | --
+===================================================
+You can modify the (n)ame, (l)ocation, (q)uantity, (d)escription, or an individual entry:
+
+
+> All Loans menu (exec only)
+
+# | Email of Loaner        | Date of Loan   | Item Loaned
+===========================================================
+1 | example123@wit.edu     | March 12, 2018 | Arduino Uno
+2 | secondperson1@wit.edu  | April 3, 2018  | Raspberry Pi
+3 | secondperson1@wit.edu  | April 3, 2018  | Raspberry Pi
+4 | secondperson1@wit.edu  | April 3, 2018  | Breadboard
+===========================================================
+Select Entry: 2
+
+> Specific Loan entry
+On April 3, 2018, secondperson1@wit.edu loaned a raspberry pi.
+Go (b)ack, manual (r)eturn, see (a)ll loans by this email: 
+
+
