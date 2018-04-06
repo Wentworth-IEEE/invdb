@@ -5,4 +5,9 @@ public class logger {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public static void stopLogger() {
+		// TODO Auto-generated method stub
+		
+	}
 }
