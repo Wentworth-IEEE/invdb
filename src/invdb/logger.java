@@ -1,0 +1,8 @@
+package invdb;
+
+public class logger {
+	public static void startLogger() {
+		// TODO Auto-generated method stub
+		
+	}
+}
