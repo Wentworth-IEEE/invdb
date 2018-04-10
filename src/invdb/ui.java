@@ -6,6 +6,8 @@
  */
 package invdb;
 
+import java.util.Scanner;
+
 public class ui {
     public static boolean powerOn = true;
 
@@ -42,7 +44,6 @@ public class ui {
 	}
 
 	public static void showPrivMenu() {
-		// TODO Auto-generated method stub
 		powerOn = showPrivFrontMenu();		
 	}
 
@@ -51,7 +52,6 @@ public class ui {
 	}
 
 	private static boolean showFrontMenu() {
-		// TODO Auto-generated method stub
 		System.out.print("Welcome, 'user'. \n" + 
 				"You are here: Front Page\n" + 
 				"You can do the following:\n" + 
@@ -64,34 +64,32 @@ public class ui {
 				"├─┼─────────────────────────┤\n" + 
 				"│4│ View your current loans │\n" + 
 				"└─┴─────────────────────────┘\n" + 
-				"Make a selection (or press 'e' for exit): ");
-		// Read user input here
-		char userInput = '\0';
-		
-		switch(userInput) {
-		case '1':
-			// Find items.
-			showFindMenu();
-			break;
-		case '2':
-			// Loan items.
-			showLoanMenu();
-			break;
-		case '3':
-			// Return items.
-			showReturnMenu();
-			break;
-		case '4':
-			// View current loans.
-			showLoanMenu();
-			break;
-		case 'e':
-			// Exit
-			return false;
-		default:
-			System.out.println("Didn't recognize that command- try again.");
-			return true;
+				"Make a selection (or press 'e' for exit): 2");
+		switch(2) {
+			case 1:
+				// Find items.
+				showFindMenu();
+				break;
+			case 2:
+				// Loan items.
+				showLoanMenu();
+				break;
+			case 3:
+				// Return items.
+				showReturnMenu();
+				break;
+			case 4:
+				// View current loans.
+				showLoanMenu();
+				break;
+			case 0:
+				// Exit
+				login.loggedIn = false;
+				return false;
+			default:
+				System.out.println("Didn't recognize that command- try again.");
 		}
+		return true;
 	}
 	
 	private static boolean showPrivFrontMenu() {
@@ -114,42 +112,54 @@ public class ui {
 				"│7│ View all loans          │\n" + 
 				"└─┴─────────────────────────┘\n" + 
 				"Make a selection (or press 'e' for exit):");
-		// Read user input here
-				char userInput = '\0';
 				
-				switch(userInput) {
-				case '1':
-					// Find items.
-					showFindMenu();
-					break;
-				case '2':
-					// Loan items.
-					showLoanMenu();
-					break;
-				case '3':
-					// Return items.
-					showReturnMenu();
-					break;
-				case '4':
-					// View current loans.
-					showLoanMenu();
-					break;
-				case '5':
-					showShippingTable();
-					break;
-				case '6':
-					showEditItemsTable();
-					break;
-				case '7':
-					showViewAllLoans();
-					break;
-				case 'e':
-					// Exit
-					return false;
-				default:
-					System.out.println("Didn't recognize that command- try again.");
-					return true;
-				}
+		switch(getUserInput()) {
+			case 1:
+				// Find items.
+				showFindMenu();
+				break;
+			case 2:
+				// Loan items.
+				showLoanMenu();
+				break;
+			case 3:
+				// Return items.
+				showReturnMenu();
+				break;
+			case 4:
+				// View current loans.
+				showLoanMenu();
+				break;
+			case 5:
+				showShippingTable();
+				break;
+			case 6:
+				showEditItemsTable();
+				break;
+			case 7:
+				showViewAllLoans();
+				break;
+			case 0:
+				login.loggedIn = false; 
+				return false;
+			default:
+				System.out.println("Didn't recognize that command- try again.");
+			}
+		
+		return true;
+	}
+
+	private static int getUserInput() {
+        Scanner reader = new Scanner(System.in);  // Reading from System.in
+        int read=-1; 
+        while(read==-1) {
+	        if(reader.hasNextInt()) {
+	        	read = reader.nextInt();
+	    	    reader.close();
+	        		
+	        }
+        }
+        return read;
 	}
 
 	private static void showViewAllLoans() {
@@ -173,18 +183,97 @@ public class ui {
 	}
 
 	private static void showLoanMenu() {
-		// TODO Auto-generated method stub
+		System.out.print("\n" + 
+				"You are here: Loan Menu\n" + 
+				"You can do the following:\n" + 
+				"┌─┬─────────────────────────┬────────────┐\n" + 
+				"│#│ Loan items              │ Available? │\n" + 
+				"├─┼─────────────────────────┼────────────┤\n" + 
+				"│1│ Arduino Uno             │    Yes     │\n" + 
+				"├─┼─────────────────────────┼────────────┤\n" + 
+				"│2│ Raspberry Pi            │    Yes     │\n" + 
+				"├─┼─────────────────────────┼────────────┤\n" + 
+				"│3│ Breadboards             │    Yes     │\n" + 
+				"└─┴─────────────────────────┴────────────┘\n" + 
+				"Make a selection (or press '0' for exit): 3");
+		switch(3) {
+			case '1':
+				// Find items.
+				showSingleItemMenu("Arduino Uno");
+				break;
+			case '2':
+				// Loan items.
+				showSingleItemMenu("Raspberry Pi");
+				break;
+			case 3:
+				// Return items.
+				showSingleItemMenu("Breadboards");
+				break;
+			case '0':
+				showFrontMenu();
+				break;
+			default:
+				System.out.println("Didn't recognize that command- try again.");
+		}
 		
 	}
 
+	private static void showSingleItemMenu(String item) {
+		System.out.print("\n" + 
+				"You are here: Item menu for " +  item +
+				"\nYou can do the following:\n" + 
+				"┌┬─────────────────────────┬───────────────┐\n" + 
+				"││ Location                │ Green Cabinet │\n" + 
+				"├┼─────────────────────────┼───────────────┤\n" + 
+				"││ Available               │ Yes           │\n" + 
+				"└┴─────────────────────────┴───────────────┘\n" + 
+				"0 to go back, or 1 to loan this item: ");	
+		while(true);
+		/*
+		switch('1') {
+		case 1:
+			loanSingleItemMenu(item);
+		default:
+			showLoanMenu();
+		}*/
+	}
+
+	private static void loanSingleItemMenu(String item) {
+		System.out.println("You are about to loan out one "+item+". Is this correct? (Y\n) ");
+		if(login.doYSlashN()) {
+			System.out.println("Success!");
+		} else {
+			System.out.println("You did not loan this item.");
+		}
+		showLoanMenu();
+	}
+
 	private static void showFindMenu() {
-		// TODO Auto-generated method stub
+		System.out.print("Welcome, 'user'. \n" + 
+				"You are here: Find menu.\n" + 
+				"You can do the following:\n" + 
+				"┌┬─────────────────────────┬───────────────────┬────────────┐\n" + 
+				"││ Loan items              │      Location     │ Available? │\n" + 
+				"├┼─────────────────────────┼───────────────────┼────────────┤\n" + 
+				"││ Arduino Uno             │   Green Cabinet   │    Yes     │\n" + 
+				"├┼─────────────────────────┼───────────────────┼────────────┤\n" + 
+				"││ Raspberry Pi            │   Green Cabinet   │    Yes     │\n" + 
+				"├┼─────────────────────────┼───────────────────┼────────────┤\n" + 
+				"││ Breadboards             │     Tool Chest    │    Yes     │\n" + 
+				"└┴─────────────────────────┴───────────────────┴────────────┘\n" + 
+				"Press 0 to go back: ");
+		switch(getUserInput()) {
+		case '0':
+			showFrontMenu();
+			break;
+		default:
+			showFrontMenu();
+		}
 		
 	}
 
 	public static void goodbye() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Goodbye!");
 	}
 }
 
