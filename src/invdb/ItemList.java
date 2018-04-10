@@ -57,9 +57,8 @@ public class ItemList {
 						Statement tempSt=conn.createStatement();
 						ResultSet avail=tempSt.executeQuery("SELECT * FROM LoanableItem WHERE LoanableItemType=(SELECT LoanableItemType FROM LoanableItemType WHERE LoanableItemTypeName='"+name+"')");
 						while(avail.next()){
-							Date LoanedSince=avail.getDate("LoanedSince");
-							Date temp=new Date(0);
-							if(!LoanedSince.equals(temp))
+							String emailLoanedTo=avail.getString("EmailLoanedTo");
+							if(emailLoanedTo.equals("-"))
 								available++;
 						}
 						tempSt.close();	

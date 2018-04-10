@@ -5,10 +5,12 @@
  * view source, and distribute as you wish under the terms in the license included.
  */
 package invdb;
+import java.io.*;
 import java.util.Scanner;
 
 public class ui {
     public static final boolean powerOn = true;
+    static Scanner input=new Scanner(System.in);
 
 	public static void printTable(ItemList t) {
         printHeader(t);
@@ -61,20 +63,21 @@ public class ui {
 		printEntries(allItems);
 	}
 
-	public static void showMenu() {
+	public static void showMenu(){
 		ItemList allItems=new ItemList();
 		allItems.createItemList(0);
 		printEntries(allItems);
-		
 		System.out.println("\nSelect an item:");
-		Scanner input=new Scanner(System.in);
+		System.out.print(">");
 		int selection=input.nextInt();
 		promptRegularUser(allItems,selection);
 		
 	}
 
 	public static void goodbye() {
-		// TODO Auto-generated method stub
+		input.close();
+		System.out.println("Have a nice day!");
+		System.exit(0);
 		
 	}
 	
@@ -82,42 +85,93 @@ public class ui {
 		Row r=itemList.getRow(selection);
 		
 		System.out.println("Do you want to (l)oan this item, (r)eturn this item, or go (b)ack?");
+		System.out.print(">");
 		Scanner input=new Scanner(System.in);
-		String c=input.next().toLowerCase();
-		boolean acceptable=true;
-		if(c!="l" && c!="r" && c!="b")
-			acceptable=false;
-		while(acceptable){
+		String in=input.next().toLowerCase();
+		char c=in.charAt(0);
+		boolean acceptable=false;
+		if(c=='l' || c=='r' || c=='b' || c=='a')
+			acceptable=true;
+		while(!acceptable){
 			System.out.println("Sorry, didn't catch that. Do you want to (l)oan this item, (r)eturn this item, or go (b)ack?");
-			c=input.nextLine();
-			if(c=="l" || c=="r" || c=="b")
+			System.out.print(">");
+			in=input.nextLine();
+			c=in.charAt(0);
+			if(c=='l' || c=='r' || c=='b' || c=='a')
 				acceptable=true;
 		}
 		
-		if(c=="l")
+		if(c=='l')
 			loanItem(r,itemList);
-			
-		
+		if(c=='r')
+			returnItem(r,itemList);
+		if(c=='b')
+			showMenu();
+		if(c=='a'){
+			showPrivMenu();
+			promptRegularUser(itemList,selection);
+		}
 	}
 	
 	public static void loanItem(Row r,ItemList itemList){
 		//trim whitespace off row entries
 		String[] s=r.getEntries();
 		for(int i=0;i<s.length;i++){
-			s[i].trim();
+			s[i]=s[i].trim();
 		}
 		
 		//if consumable, check for in stock
 		if(Integer.parseInt(s[0])<=itemList.numberOfLoanables){
 			String itemName=s[1];
-			Query q=new Query();
-			int result=q.loanItem(itemName);
+			int result=Query.loanItem(itemName,login.active_user_email);
+			switch(result){
+			case -1:
+				System.out.println("SQL Error");
+				break;
+			case 0:
+				System.out.println("Sorry, there are insufficient items available");
+				break;
+			case 1:
+				System.out.println("Sucessfully loaned "+itemName);
+			}
 		}
 		else{
 			System.out.println("It's consumable, go get it!");
 		}
 		
+		System.out.println("Is there anything else you'd like to do? (y/n)");
+		System.out.print(">");
+		Scanner input=new Scanner(System.in);
+		String in=input.nextLine().toLowerCase();
+		if(in.equals("n"))
+			goodbye();
+		else{
+			showMenu();
+		}
+	}//end of loanItem
+	
+	public static void returnItem(Row r,ItemList itemList){
+		String[] s=r.getEntries();
+		for(int i=0;i<s.length;i++){
+			s[i]=s[i].trim();
+		}
 		
+		String itemName=s[1];
+		int result=Query.returnItem(itemName, login.active_user_email);
+		if(result==1)
+			System.out.println("Successfully returned "+itemName);
+		else
+			System.out.println("No loan for "+itemName+" was found under your email");
+		
+		System.out.println("Is there anything else you'd like to do? (y/n)");
+		System.out.print(">");
+		Scanner input=new Scanner(System.in);
+		String in=input.nextLine().toLowerCase();
+		if(in.equals("n"))
+			goodbye();
+		else{
+			showMenu();
+		}
 	}
 }
 

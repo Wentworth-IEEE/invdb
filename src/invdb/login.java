@@ -9,7 +9,7 @@ import java.util.Scanner;
 import java.io.*;
 
 public class login {
-    public String active_user_email = new String("");
+    public static String active_user_email = new String("");
     public static boolean privileged = false;
     public static boolean loggedIn = false;
         
@@ -24,7 +24,6 @@ public class login {
             System.out.print("> ");
             Scanner input=new Scanner(System.in);
             String usermail = input.nextLine();
-
             switch(checkUsername(usermail)) {
                 case 0:
                     System.out.print("That name wasn't recognized by our system. \n"+
@@ -36,6 +35,7 @@ public class login {
                     System.out.println("You are now logged in as "+usermail);
                     allowBreak = true;
                     loggedIn=true;
+                    active_user_email=usermail;
                     break;
                 case 2:
                     System.out.println("You are now logged in as "+usermail);
@@ -121,4 +121,5 @@ public class login {
     private static String hashpass(String enteredText) {
 		return null;
     }
+    
 }
