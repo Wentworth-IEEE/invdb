@@ -5,9 +5,11 @@
  */
 package invdb;
 import java.lang.String;
+import java.util.Scanner;
+import java.io.*;
 
 public class login {
-    public String active_user_email = new String("");
+    public static String active_user_email = new String("");
     public static boolean privileged = false;
     public static boolean loggedIn = false;
         
@@ -20,8 +22,8 @@ public class login {
         while(!allowBreak) {
             System.out.println("Welcome to the IEEE inventory system! Type your WIT email below to get started:");
             System.out.print("> ");
-            String usermail = ""; // TODO- fix this
-
+            Scanner input=new Scanner(System.in);
+            String usermail = input.nextLine();
             switch(checkUsername(usermail)) {
                 case 0:
                     System.out.print("That name wasn't recognized by our system. \n"+
@@ -32,11 +34,14 @@ public class login {
                 case 1:
                     System.out.println("You are now logged in as "+usermail);
                     allowBreak = true;
+                    loggedIn=true;
+                    active_user_email=usermail;
                     break;
                 case 2:
                     System.out.println("You are now logged in as "+usermail);
                     promptUserForExec(usermail);
                     allowBreak = true;
+                    loggedIn=true;
                     break;
             } // End switch
         } // End while(!allowBreak)
@@ -83,6 +88,21 @@ public class login {
     }
 
     private static boolean checkLoginFile(String usermail) {
+    	try{
+    		BufferedReader br=new BufferedReader(new FileReader("userlist.txt"));
+    		String line=br.readLine();
+    		while(line!=null){
+    			if(line.contains(usermail))
+    				return true;
+    			line=br.readLine();
+    		}
+    	}
+    	catch(FileNotFoundException e){
+    		System.out.println("Sorry, file not found");
+    	}
+    	catch(IOException e){
+    		System.out.println("Sorry, there was an issue with the file");
+    	}
 		return false;
     }
 
@@ -101,4 +121,5 @@ public class login {
     private static String hashpass(String enteredText) {
 		return null;
     }
+    
 }

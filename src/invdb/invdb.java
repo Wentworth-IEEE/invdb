@@ -34,7 +34,6 @@ public class invdb {
         
         while(ui.powerOn) {					// This next bit should go forever (until stopped)
 	        login.promptUser();			// Prompt the user for login stuff.
-	        
 	        while(login.loggedIn) {		// Show menus only while logged in- keep asking for login otherwise.
 		        if(login.privileged)
 		        	ui.showPrivMenu();  // Privileged users get the privileged menu
@@ -42,8 +41,8 @@ public class invdb {
 		        	ui.showMenu();		// Non-privileged users get the normal menu
 	        }
         }
-        logger.stopLogger();
-        ui.goodbye();
+        //logger.stopLogger();
+        //ui.goodbye();
     }
 }
 
