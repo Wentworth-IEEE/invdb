@@ -44,6 +44,7 @@ public class login {
                     loggedIn=true;
                     break;
             } // End switch
+            input.close();
         } // End while(!allowBreak)
     } // End promptUser()
 
@@ -67,24 +68,26 @@ public class login {
      * Prompt the user, asking if they'd like to login as an exec.
      */
     private static void promptUserForExec(String usermail) {
-        System.out.print("You have a privileged account. Would you like to log in as an executive?");
-        if(doYSlashN()){
-            if(getExecPassword(usermail) != null) {
-                System.out.print("Enter your password.\n> ");
-                String enteredText = ""; //TODO- This.
-                if(hashpass(enteredText) == getExecPassword(usermail)) {
-                    System.out.println("You have logged in as an executive.");
-                    privileged = true;
-                } else {
-                    System.out.println("Password check failed!");
-                    privileged = false;
-                }
-            } else {
-                System.out.println("This account has not yet set its exec password. Enter it below.");
-            }
-        } else {
-            System.out.println("Okay. You will be shown the standard user menus.");
-        }
+        try {
+			System.out.print("You have a privileged account. Would you like to log in as an executive?");
+			if(doYSlashN()){
+		        System.out.print("Enter your password.\n> ");
+		        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		        String enteredText = br.readLine(); //TODO- This.
+		        if(checkExecPass(usermail, enteredText)) {
+		            System.out.println("You have logged in as an executive.");
+		            privileged = true;
+		        } else {
+		            System.out.println("Password check failed!");
+		            privileged = false;
+		        }
+			} else {
+			    System.out.println("Okay. You will be shown the standard user menus.");
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     private static boolean checkLoginFile(String usermail) {
@@ -92,10 +95,13 @@ public class login {
     		BufferedReader br=new BufferedReader(new FileReader("userlist.txt"));
     		String line=br.readLine();
     		while(line!=null){
-    			if(line.contains(usermail))
+    			if(line.contains(usermail)) {
+    				br.close();
     				return true;
+    			}
     			line=br.readLine();
     		}
+    		br.close();
     	}
     	catch(FileNotFoundException e){
     		System.out.println("Sorry, file not found");
@@ -107,6 +113,24 @@ public class login {
     }
 
     private static boolean checkExecFile(String usermail) {
+    	try{
+    		BufferedReader br = new BufferedReader(new FileReader("execlist.txt"));
+    		String line = br.readLine();
+    		while(line != null){
+    			if(line.contains(usermail)) {
+    				br.close();
+    				return true;
+    			}
+    			line = br.readLine();
+    		}
+    		br.close();
+    	}
+    	catch(FileNotFoundException e){
+    		System.out.println("Sorry, file not found");
+    	}
+    	catch(IOException e){
+    		System.out.println("Sorry, there was an issue with the file");
+    	}
 		return false;
     }
 
@@ -114,12 +138,33 @@ public class login {
 		return false;
     }
 
-    private static String getExecPassword(String usermail) {
-		return null;
+    private static boolean checkExecPass(String usermail, String enteredText) {
+    	usermail = usermail.concat(enteredText);
+    	usermail = hashpass(usermail);
+    	
+       	try{
+    		BufferedReader br = new BufferedReader(new FileReader("passlist.txt"));
+    		String line = br.readLine();
+    		while(line != null){
+    			if(line.contains(usermail)) {
+    				br.close();
+    				return true;
+    			}
+    			line = br.readLine();
+    		}
+    		br.close();
+    	}
+    	catch(FileNotFoundException e){
+    		System.out.println("Sorry, file not found");
+    	}
+    	catch(IOException e){
+    		System.out.println("Sorry, there was an issue with the file");
+    	}
+		return false;
     }
 
     private static String hashpass(String enteredText) {
-		return null;
+		return ""+enteredText.hashCode();
     }
     
 }
